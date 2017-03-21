@@ -35,6 +35,8 @@ class Program
 
         int difficultyLevel = int.Parse(difficultyInput);
 
+        Console.WriteLine();    //  Skip a line
+
         Console.WriteLine("Difficulty level: " + difficultyLevel);
 
         Console.WriteLine();    //  Skip a line
