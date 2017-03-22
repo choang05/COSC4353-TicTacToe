@@ -62,33 +62,37 @@ public class GameManager
             curTurn = TurnState.PlayerTurn;
         }
     }
-    
-    //  Process the computer's turn. Determine actions based on difficulty
+
+    #region Process the computer's turn. Determine actions based on difficulty
     public void ProcessComputerTurn(int compDifficulty)
     {
-        //  EASY - randomly input empty space
+        #region  EASY - randomly input empty space
         if (compDifficulty == 1)
         {
             Random random = new Random();
             int randomIndex = random.Next(0, Grid.EmptyGridPoints.Count);
 
-            Console.WriteLine("Row " + Grid.EmptyGridPoints[randomIndex].yCoord + ", Column " + Grid.EmptyGridPoints[randomIndex].xCoord);
+            Console.WriteLine("I choose Row " + Grid.EmptyGridPoints[randomIndex].yCoord + " and Column " + Grid.EmptyGridPoints[randomIndex].xCoord);
 
             Grid.InputGridPoint(Grid.EmptyGridPoints[randomIndex].xCoord, Grid.EmptyGridPoints[randomIndex].yCoord, Grid.GridPoint.InputType.O);
         }
+        #endregion
 
-        //  MEDIUM
+        #region  MEDIUM
         else if (compDifficulty == 2)
         {
 
         }
+        #endregion
 
-        //  HARD
+        #region HARD
         else if (compDifficulty == 3)
         {
 
         }
+        #endregion
     }
+    #endregion
 
     //  Process things when player wins
     public void ProcessPlayerWin()
@@ -102,5 +106,11 @@ public class GameManager
     {
         Console.WriteLine("I win!");
         computerScore++;
+    }
+
+    //  Process things when round ties
+    public void ProcessTie()
+    {
+        Console.WriteLine("It's a tie!");
     }
 }

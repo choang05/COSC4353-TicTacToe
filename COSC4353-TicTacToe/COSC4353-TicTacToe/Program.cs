@@ -42,9 +42,16 @@ class Program
 
             int difficultyLevel = int.Parse(difficultyInput);
 
-            Console.WriteLine();    //  Skip a line
-
             PrintDifficulty(difficultyLevel);
+
+            //  Print current round
+            Console.WriteLine("----- ROUND " + gameManager.roundCounter + " -----\n");
+
+            //  Print which player goes first
+            if (gameManager.curTurn == GameManager.TurnState.PlayerTurn)
+                Console.WriteLine("Player goes first!");
+            else
+                Console.WriteLine("Computer goes first!");
 
             //  While the grid is not full (round not finished), loop
             while (grid.IsGridFull() == false)
@@ -100,7 +107,7 @@ class Program
                 }
                 else
                 {
-                    Console.WriteLine("My turn.");
+                    Console.WriteLine("My turn...");
                     switch (difficultyLevel)
                     {
                         case 1:
@@ -117,7 +124,19 @@ class Program
                     //  Set the next turn to Player
                     gameManager.curTurn = GameManager.TurnState.PlayerTurn;
                 }
+
+                //  Evaluate winning conditions
             }
+
+            //  Print current state of board
+            grid.PrintCurrentGrid();
+
+            //  Print current scores
+            Console.WriteLine("----- SCOREBOARD -----" +
+                "\n Current Round:\t" + gameManager.roundCounter +
+                "\n User:\t\t" + gameManager.playerScore +
+                "\n Computer:\t" + gameManager.computerScore +
+                "\n ----------------------");
 
             //  Prompt user for replay, if true, setup new game. Otherwise, break loop to end game.
             if (PromptUserForReplay())
@@ -203,7 +222,7 @@ class Program
                 Console.Write("Hard");
                 break;
         }
-        Console.WriteLine();
+        Console.WriteLine("\n");
     }
     #endregion
 

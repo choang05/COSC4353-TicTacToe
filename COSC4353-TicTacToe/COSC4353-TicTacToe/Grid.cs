@@ -33,6 +33,9 @@ public class Grid
     //  Constructor
     public Grid(int gridSize)
     {
+        if (gridSize < 3)
+            return;
+
         GridSize = gridSize;
         GenerateGrid(GridSize);
 
@@ -40,7 +43,7 @@ public class Grid
         OccupiedGridPoints = new List<GridPoint>();
     }
 
-    //  Generate the grid points with default values
+    #region Generate the grid points with default values
     public void GenerateGrid(int gridSize)
     {
         GridPoints = new GridPoint[gridSize, gridSize];
@@ -53,8 +56,9 @@ public class Grid
             }
         }
     }
+    #endregion
 
-    //  Prints the current state of the grid
+    #region Prints the current state of the grid
     public void PrintCurrentGrid()
     {
         Console.WriteLine();    //  Skip a line
@@ -85,19 +89,21 @@ public class Grid
         }
         Console.WriteLine();    //  Skip a line
     }
+    #endregion
 
-    //  InputGridpoint
+    #region Inputs a inputtype in the GridPoint at the given x, y, and the inputtype 
     public static void InputGridPoint(int x, int y, GridPoint.InputType inputType)
     {
         GridPoints[x, y].input = inputType;
         GridPoints[x, y].isOccupied = true;
 
-        //  Update empty gridpoints
-        EmptyGridPoints.Remove(GridPoints[x, y]);
+        EmptyGridPoints = GetEmptyGridPoints();
+        //Console.WriteLine(EmptyGridPoints.Count);
 
         //  Update taken gridpoints
         OccupiedGridPoints.Add(GridPoints[x, y]);
     }
+    #endregion 
 
     #region returns true if grid no longer has any spaces left. Otherwise, return false
     public bool IsGridFull()
@@ -107,6 +113,24 @@ public class Grid
             return true;
         }
         return false;
+    }
+    #endregion
+
+    #region Returns all gridpoints that are empty
+    public static List<GridPoint> GetEmptyGridPoints()
+    {
+        List<GridPoint> emptyGridPoints = new List<GridPoint>();
+        for (int y = 0; y < GridSize; y++)
+        {
+            for (int x = 0; x < GridSize; x++)
+            {
+                if (!GridPoints[x,y].isOccupied)
+                {
+                    emptyGridPoints.Add(GridPoints[x, y]);
+                }
+            }
+        }
+        return emptyGridPoints;
     }
     #endregion
 }
