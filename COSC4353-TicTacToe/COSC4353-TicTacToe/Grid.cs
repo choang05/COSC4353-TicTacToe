@@ -48,4 +48,33 @@ public class Grid
             }
         }
     }
+
+    //  Prints the current state of the grid
+    public void PrintCurrentGrid()
+    {
+        Console.WriteLine();    //  Skip a line
+
+        Console.Write("   ");
+        for (int row = 0; row < GridSize; row++)
+            Console.Write(row + "  ");
+
+        Console.WriteLine();
+
+        for (int y = 0; y < GridSize; y++)
+        {
+            Console.Write(y + " ");
+            for (int x = 0; x < GridSize; x++)
+            {
+                if (GridPoints[y, x].input == GridPoint.InputType.NULL)
+                {
+                    Console.Write("[" + " " + "]");
+                    //Console.Write("[" + GridPoints[x, y].xCoord + GridPoints[x, y].yCoord + "]");
+                }
+                else
+                    Console.Write("[" + GridPoints[x,y].input + "]");
+            }
+            Console.WriteLine();
+        }
+        Console.WriteLine();    //  Skip a line
+    }
 }

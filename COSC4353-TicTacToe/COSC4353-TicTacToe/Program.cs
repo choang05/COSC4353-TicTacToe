@@ -63,9 +63,11 @@ class Program
 
         Console.WriteLine();    //  Skip a line
 
-        Console.WriteLine("Difficulty level: " + difficultyLevel);
+        PrintDifficulty(difficultyLevel);
 
-        Console.WriteLine();    //  Skip a line
+        grid.PrintCurrentGrid();
+
+        Console.WriteLine("\nThank you for playing Tic-Tac - Toe.");
 
         //  Pause console so it doesn't close
         Console.ReadLine();
@@ -116,5 +118,24 @@ class Program
     private static void PrintBoardSizePromt()
     {
         Console.Write("Input board size: ");
+    }
+
+    //  Prints the difficulty
+    private static void PrintDifficulty(int difficultyLevel)
+    {
+        Console.Write("\nDifficulty level: ");
+        switch (difficultyLevel)
+        {
+            case 1:
+                Console.Write("Easy");
+                break;
+            case 2:
+                Console.Write("Medium");
+                break;
+            case 3:
+                Console.Write("Hard");
+                break;
+        }
+        Console.WriteLine();
     }
 }
