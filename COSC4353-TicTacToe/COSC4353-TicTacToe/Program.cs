@@ -6,29 +6,55 @@ using System.Threading.Tasks;
 
 class Program
 {
-    //  User-defined board size
-    private const int BoardSize = 1;
-
     static void Main(string[] args)
     {
-        //  Initialize grid
-        Grid grid = new Grid(BoardSize);
+        Console.WriteLine("Welcome to Tic-Tac-Toe!\n");
+        
+        //  Initialize game manager
+        GameManager gameManager = new GameManager();
 
         //  Prompt user for grid size
-        Console.WriteLine("Welcome to Tic-Tac-Toe!");
+        PrintBoardSizePromt();
+        string boardSizeInput = Console.ReadLine();
 
-        Console.WriteLine();    //  Skip a line
+        //  Evaluate input for validity, if not, repeat request
+        while (!IsBoardSizeInputValid(boardSizeInput))
+        {
+            Console.WriteLine("\nInvalid input!\n");
 
-        Console.Write("Please enter a difficulty number from 1-3: ");
+            PrintBoardSizePromt();
+
+            boardSizeInput = Console.ReadLine();
+        }
+
+        Console.WriteLine();    // Skip a line
+
+        //  Initialize grid given inputted board size
+        int boardSize = int.Parse(boardSizeInput);
+        Grid grid = new Grid(boardSize);
+
+        //  if the board size is less then 3... decide winner by default and set a new game.
+        if (boardSize < 3)
+        {
+            if (gameManager.firstPick == GameManager.GameState.PlayerTurn)
+                gameManager.playerScore++;
+            else
+                gameManager.computerScore++;
+
+            gameManager.SetupNextRound();
+        }
+
+        //  Prompt user for difficulty level
+        PrintDifficultyPromt();
 
         string difficultyInput = Console.ReadLine();
 
         //  Evaluate input for validity, if not, repeat request
         while (!IsDifficultyInputValid(difficultyInput))
         {
-            Console.WriteLine("Invalid input!");
-            Console.WriteLine();    //  Skip a line
-            Console.WriteLine("Please enter a difficulty number from 1-3:");
+            Console.WriteLine("\nInvalid input! \n");
+
+            PrintDifficultyPromt();
 
             difficultyInput = Console.ReadLine();
         }
@@ -46,6 +72,18 @@ class Program
     }
 
     //  Returns true if given string is a integer. Otherwise, return false
+    private static bool IsBoardSizeInputValid(string input)
+    {
+        // determine if input is a integer 
+        int boardSize;
+        bool isNumeric = int.TryParse(input, out boardSize);
+        if (isNumeric)
+            return true;
+        else
+            return false;
+    }
+
+    //  Returns true if given string is a integer and is within valid ranges. Otherwise, return false
     private static bool IsDifficultyInputValid(string input)
     {
         // determine if input is a integer 
@@ -63,5 +101,20 @@ class Program
         }
 
         return false;
+    }
+
+    //  Prints the difficulty promt
+    private static void PrintDifficultyPromt()
+    {
+        Console.WriteLine("Input a difficulty level \n" +
+                "1. Easy\n" +
+                "2. Medium\n" +
+                "3. Hard\n");
+    }
+
+    //  Prints the board size promt
+    private static void PrintBoardSizePromt()
+    {
+        Console.Write("Input board size: ");
     }
 }

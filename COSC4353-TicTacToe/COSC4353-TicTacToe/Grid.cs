@@ -18,6 +18,7 @@ public class Grid
         public InputType input;
         public enum InputType  {   X, O, NULL    };
 
+        //  Constructor
         public GridPoint(int xCoord, int yCoord, bool isOccupied, InputType input)
         {
             this.xCoord = xCoord;
@@ -27,6 +28,7 @@ public class Grid
         }
     }
 
+    //  Constructor
     public Grid(int gridSize)
     {
         GridSize = gridSize;
