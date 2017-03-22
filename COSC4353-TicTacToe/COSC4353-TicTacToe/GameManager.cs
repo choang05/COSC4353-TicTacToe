@@ -14,9 +14,18 @@ public class GameManager
     public TurnState firstPick;
     public enum TurnState
     {
-        PlayerTurn,
-        ComputerTurn,
-        NULL
+        PlayerTurn, ComputerTurn, NULL
+    };
+
+    public enum GameConditions
+    {
+        PlayerWins, ComputerWins, Tie, NULL
+    };
+
+    Direction direction;
+    enum Direction
+    {
+        Top, Right, Bottom, Left
     };
 
     public GameManager()
@@ -93,6 +102,33 @@ public class GameManager
         #endregion
     }
     #endregion
+
+    #region Returns the game condition
+    public GameConditions GetWinCondition()
+    {
+        //  Check if the grid is full
+        Console.WriteLine(GetLength(0, Grid.GridPoints[0,0], Direction.Right, Grid.GridPoints[0,0].input));
+        if (Grid.EmptyGridPoints.Count <= 0)
+        {
+        }
+
+        return GameConditions.NULL;
+    }
+    #endregion
+
+    //  Recursivly return the length of the inputtype in a given direction and input type
+    int GetLength(int length, Grid.GridPoint gridPoint, Direction dir, Grid.GridPoint.InputType inputType)
+    {
+        if (dir == Direction.Top && gridPoint.yCoord - 1 >= 0 && Grid.GridPoints[gridPoint.xCoord, gridPoint.yCoord-1].input == inputType)
+            return length + GetLength(length, gridPoint.GetTopNeighbor(), dir, inputType);
+        else if (dir == Direction.Right && gridPoint.xCoord + 1 < Grid.GridSize && Grid.GridPoints[gridPoint.xCoord + 1, gridPoint.yCoord].input == inputType)
+            return length + GetLength(length, gridPoint.GetRightNeighbor(), dir, inputType);
+        else if (dir == Direction.Bottom && gridPoint.yCoord + 1 < Grid.GridSize && Grid.GridPoints[gridPoint.xCoord, gridPoint.yCoord + 1].input == inputType)
+            return length + GetLength(length, gridPoint.GetBottomNeighbor(), dir, inputType);
+        else if (dir == Direction.Left && gridPoint.xCoord - 1 >= 0 && Grid.GridPoints[gridPoint.xCoord - 1, gridPoint.yCoord].input == inputType)
+            return length + GetLength(length, gridPoint.GetLeftNeighbor(), dir, inputType);
+        return 0;
+    }
 
     //  Process things when player wins
     public void ProcessPlayerWin()

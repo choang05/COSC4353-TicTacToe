@@ -96,6 +96,12 @@ class Program
                             //  Input 'X' in the location for player
                             Grid.InputGridPoint(columnNum, rowNum, Grid.GridPoint.InputType.X);
 
+                            if (columnNum + 1 < Grid.GridSize)
+                            {
+                                Console.WriteLine(Grid.GridPoints[columnNum,rowNum].GetRightNeighbor().input);
+
+                            }
+
                             //  Set the next turn to computer
                             gameManager.curTurn = GameManager.TurnState.ComputerTurn;
 
@@ -125,7 +131,24 @@ class Program
                     gameManager.curTurn = GameManager.TurnState.PlayerTurn;
                 }
 
-                //  Evaluate winning conditions
+                #region Evaluate winning conditions
+                GameManager.GameConditions curCondition = gameManager.GetWinCondition();
+                if (curCondition == GameManager.GameConditions.PlayerWins)
+                {
+                    gameManager.ProcessPlayerWin();
+                    break;
+                }
+                else if (curCondition == GameManager.GameConditions.ComputerWins)
+                {
+                    gameManager.ProcessComputerWin();
+                    break;
+                }
+                else if (curCondition == GameManager.GameConditions.Tie)
+                {
+                    gameManager.ProcessTie();
+                    break;
+                }
+                #endregion
             }
 
             //  Print current state of board

@@ -28,6 +28,23 @@ public class Grid
             this.isOccupied = isOccupied;
             this.input = input;
         }
+
+        public GridPoint GetTopNeighbor()
+        {
+            return GridPoints[xCoord, yCoord - 1];
+        }
+        public GridPoint GetRightNeighbor()
+        {
+            return GridPoints[xCoord + 1, yCoord];
+        }
+        public GridPoint GetBottomNeighbor()
+        {
+            return GridPoints[xCoord, yCoord + 1];
+        }
+        public GridPoint GetLeftNeighbor()
+        {
+            return GridPoints[xCoord - 1, yCoord];
+        }
     }
 
     //  Constructor
