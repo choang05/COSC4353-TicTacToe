@@ -21,11 +21,29 @@ public class GameManager
 
     public GameManager()
     {
-        roundCounter = 0;
+        roundCounter = 1;
         playerScore = 0;
         computerScore = 0;
         curState = GameState.NULL;
         firstPick = GameState.PlayerTurn;
+    }
+
+    //  returns true if the board size is greater then 3... decide winner by default and set a new game.
+    public bool CheckBoardSizeConditions()
+    {
+        //  if the board size is less then 3... decide winner by default and set a new game.
+        if (Grid.GridSize < 3)
+        {
+            if (firstPick == GameManager.GameState.PlayerTurn)
+                ProcessPlayerWin();
+            else
+                ProcessComputerWin();
+
+            SetupNextRound();
+
+            return false;
+        }
+        return true;
     }
 
     public void SetupNextRound()
@@ -44,4 +62,22 @@ public class GameManager
             curState = GameState.PlayerTurn;
         }
     }
+    
+    public void ProcessComputerTurn()
+    {
+
+    }
+
+    //  Process things when player wins
+    public void ProcessPlayerWin()
+    {
+        playerScore++;
+    }
+
+    //  Process things when computer wins
+    public void ProcessComputerWin()
+    {
+        computerScore++;
+    }
+
 }

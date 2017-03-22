@@ -13,11 +13,9 @@ class Program
         //  Initialize game manager
         GameManager gameManager = new GameManager();
 
-        //  Prompt user for grid size
+        //  Prompt user for grid size & evaluate input for validity, if not, repeat request
         PrintBoardSizePromt();
         string boardSizeInput = Console.ReadLine();
-
-        //  Evaluate input for validity, if not, repeat request
         while (!IsBoardSizeInputValid(boardSizeInput))
         {
             Console.WriteLine("\nInvalid input!\n");
@@ -33,23 +31,12 @@ class Program
         int boardSize = int.Parse(boardSizeInput);
         Grid grid = new Grid(boardSize);
 
-        //  if the board size is less then 3... decide winner by default and set a new game.
-        if (boardSize < 3)
-        {
-            if (gameManager.firstPick == GameManager.GameState.PlayerTurn)
-                gameManager.playerScore++;
-            else
-                gameManager.computerScore++;
+        //  Evaluate board size. if the board size is less then 3... decide winner by default and set a new game.
+        gameManager.CheckBoardSizeConditions();
 
-            gameManager.SetupNextRound();
-        }
-
-        //  Prompt user for difficulty level
+        //  Prompt user for difficulty level & evaluate input for validity, if not, repeat request
         PrintDifficultyPromt();
-
         string difficultyInput = Console.ReadLine();
-
-        //  Evaluate input for validity, if not, repeat request
         while (!IsDifficultyInputValid(difficultyInput))
         {
             Console.WriteLine("\nInvalid input! \n");
@@ -65,27 +52,69 @@ class Program
 
         PrintDifficulty(difficultyLevel);
 
+        //  Print current state of board
         grid.PrintCurrentGrid();
+
+        //  Prompt user for tictactoe input & evaluate input for validity, if not, repeat request
+        Console.WriteLine("What is your move?");
+        //  Prompt for row
+        PromptTicTacToeInput(true);
+        string rowInput = Console.ReadLine();
+        while (!IsTicTacToeInputValid(rowInput))
+        {
+            Console.WriteLine("\nInvalid input!");
+            PromptTicTacToeInput(true);
+            rowInput = Console.ReadLine();
+        }
+        int rowNum = int.Parse(rowInput);
+
+        //  Prompt for column
+        PromptTicTacToeInput(false);
+        string columnInput = Console.ReadLine();
+        while (!IsTicTacToeInputValid(columnInput))
+        {
+            Console.WriteLine("\nInvalid input!");
+            PromptTicTacToeInput(false);
+            columnInput = Console.ReadLine();
+        }
+        int columnNum = int.Parse(columnInput);
+
+        //  Determine if player/computer goes first for the round
+        if (gameManager.firstPick == GameManager.GameState.PlayerTurn && gameManager.roundCounter > 1)
+        {
+            //PromptTicTacToeInput();
+            Console.ReadLine();
+        }
+        else
+        {
+            Console.WriteLine("Computer goes first");
+            gameManager.ProcessComputerTurn();
+        }
 
         Console.WriteLine("\nThank you for playing Tic-Tac - Toe.");
 
-        //  Pause console so it doesn't close
-        Console.ReadLine();
+        Console.ReadLine();         //  Pause console so it doesn't close
     }
 
-    //  Returns true if given string is a integer. Otherwise, return false
+    #region Returns true if board size input is a integer. Otherwise, return false
     private static bool IsBoardSizeInputValid(string input)
     {
         // determine if input is a integer 
         int boardSize;
         bool isNumeric = int.TryParse(input, out boardSize);
         if (isNumeric)
-            return true;
+        {
+            //  Determine if input is within valid range
+            if (boardSize > 0)
+                return true;
+            return false;
+        }
         else
             return false;
     }
+    #endregion
 
-    //  Returns true if given string is a integer and is within valid ranges. Otherwise, return false
+    #region Returns true if difficulty input is a integer and is within valid ranges. Otherwise, return false
     private static bool IsDifficultyInputValid(string input)
     {
         // determine if input is a integer 
@@ -95,17 +124,33 @@ class Program
         {
             //  Determine if input is within valid range
             if (difficultyLevel > 0 && difficultyLevel <= 3)
+                return true;
+            return false;
+        }
+        return false;
+    }
+    #endregion
+
+    #region Returns true if TicTacToe input is a integer and is within valid ranges. Otherwise, return false
+    private static bool IsTicTacToeInputValid(string input)
+    {
+        // determine if input is a integer 
+        int ticTacToeNum;
+        bool isNumeric = int.TryParse(input, out ticTacToeNum);
+        if (isNumeric)
+        {
+            //  Determine if input is within valid range
+            if (ticTacToeNum >= 0 && ticTacToeNum < Grid.GridSize)
             {
                 return true;
             }
-
             return false;
         }
-
         return false;
     }
-
-    //  Prints the difficulty promt
+    #endregion
+    
+    #region Prints the difficulty promt
     private static void PrintDifficultyPromt()
     {
         Console.WriteLine("Input a difficulty level \n" +
@@ -113,14 +158,26 @@ class Program
                 "2. Medium\n" +
                 "3. Hard\n");
     }
+    #endregion
 
-    //  Prints the board size promt
+    #region Prints the board size promt
     private static void PrintBoardSizePromt()
     {
         Console.Write("Input board size: ");
     }
+    #endregion
 
-    //  Prints the difficulty
+    #region Prints the TicTacToe input prompt
+    private static void PromptTicTacToeInput(bool promptRow)
+    {
+        if (promptRow)
+            Console.Write("Enter a row number from 0 to " + (Grid.GridSize - 1) + ": ");
+        else
+            Console.Write("Enter a column number from 0 to " + (Grid.GridSize-1) + ": ");
+    }
+    #endregion
+
+    #region Prints the difficulty
     private static void PrintDifficulty(int difficultyLevel)
     {
         Console.Write("\nDifficulty level: ");
@@ -138,4 +195,5 @@ class Program
         }
         Console.WriteLine();
     }
+    #endregion
 }
