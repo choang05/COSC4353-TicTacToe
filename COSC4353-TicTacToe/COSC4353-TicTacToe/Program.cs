@@ -8,111 +8,128 @@ class Program
 {
     static void Main(string[] args)
     {
+        //  User-Defined parameters
+        const int BoardSize = 3;
+
         Console.WriteLine("Welcome to Tic-Tac-Toe!\n");
         
         //  Initialize game manager
         GameManager gameManager = new GameManager();
 
-        //  Prompt user for grid size & evaluate input for validity, if not, repeat request
-        PrintBoardSizePromt();
-        string boardSizeInput = Console.ReadLine();
-        while (!IsBoardSizeInputValid(boardSizeInput))
+        while (true)
         {
-            Console.WriteLine("\nInvalid input!\n");
+            //  Initialize grid given board size
+            Grid grid = new Grid(BoardSize);
 
-            PrintBoardSizePromt();
+            //  Evaluate board size. if the board size is less then 3... decide winner by default and set a new game.
+            if (!gameManager.IsBoardSizeBigEnough())
+            {
+                Console.WriteLine("Ending game because board size is too small.");
+                break;
+            }
 
-            boardSizeInput = Console.ReadLine();
+            //  Prompt user for difficulty level & evaluate input for validity, if not, repeat request
+            PrintDifficultyPrompt();
+            string difficultyInput = Console.ReadLine();
+            while (!IsDifficultyInputValid(difficultyInput))
+            {
+                Console.WriteLine("\nInvalid input! \n");
+
+                PrintDifficultyPrompt();
+
+                difficultyInput = Console.ReadLine();
+            }
+
+            int difficultyLevel = int.Parse(difficultyInput);
+
+            Console.WriteLine();    //  Skip a line
+
+            PrintDifficulty(difficultyLevel);
+
+            //  While the grid is not full (round not finished), loop
+            while (grid.IsGridFull() == false)
+            {
+                //  Print current state of board
+                grid.PrintCurrentGrid();
+
+                //  Determine if player/computer goes first for the round
+                if (gameManager.curTurn == GameManager.TurnState.PlayerTurn)
+                {
+                    //  Prompt user for tictactoe input & evaluate input for validity, if not, repeat request
+                    Console.WriteLine("Your turn. What is your move?");
+                    while(true)
+                    {
+                        #region Prompt for row number
+                        //  Prompt for row
+                        PromptTicTacToeInput(true);
+                        string rowInput = Console.ReadLine();
+                        while (!IsTicTacToeInputValid(rowInput))
+                        {
+                            Console.WriteLine("\nInvalid input!");
+                            PromptTicTacToeInput(true);
+                            rowInput = Console.ReadLine();
+                        }
+                        int rowNum = int.Parse(rowInput);
+                        #endregion
+
+                        #region Prompt for column number
+                        PromptTicTacToeInput(false);
+                        string columnInput = Console.ReadLine();
+                        while (!IsTicTacToeInputValid(columnInput))
+                        {
+                            Console.WriteLine("\nInvalid input!");
+                            PromptTicTacToeInput(false);
+                            columnInput = Console.ReadLine();
+                        }
+                        int columnNum = int.Parse(columnInput);
+                        #endregion
+
+                        if (!Grid.GridPoints[columnNum, rowNum].isOccupied)
+                        {
+                            //  Input 'X' in the location for player
+                            Grid.InputGridPoint(rowNum, columnNum, Grid.GridPoint.InputType.X);
+
+                            //  Set the next turn to computer
+                            gameManager.curTurn = GameManager.TurnState.ComputerTurn;
+
+                            break;
+                        }
+                        else
+                            Console.WriteLine("Space is occupied! Please try inputting again.");
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("My turn.");
+                    switch (difficultyLevel)
+                    {
+                        case 1:
+                            gameManager.ProcessComputerTurn(difficultyLevel);
+                            break;
+                        case 2:
+                            gameManager.ProcessComputerTurn(difficultyLevel);
+                            break;
+                        case 3:
+                            gameManager.ProcessComputerTurn(difficultyLevel);
+                            break;
+                    }
+
+                    //  Set the next turn to Player
+                    gameManager.curTurn = GameManager.TurnState.PlayerTurn;
+                }
+            }
+
+            //  Prompt user for replay, if true, setup new game. Otherwise, break loop to end game.
+            if (PromptUserForReplay())
+                gameManager.SetupNextRound();
+            else
+                break;
         }
 
-        Console.WriteLine();    // Skip a line
-
-        //  Initialize grid given inputted board size
-        int boardSize = int.Parse(boardSizeInput);
-        Grid grid = new Grid(boardSize);
-
-        //  Evaluate board size. if the board size is less then 3... decide winner by default and set a new game.
-        gameManager.CheckBoardSizeConditions();
-
-        //  Prompt user for difficulty level & evaluate input for validity, if not, repeat request
-        PrintDifficultyPromt();
-        string difficultyInput = Console.ReadLine();
-        while (!IsDifficultyInputValid(difficultyInput))
-        {
-            Console.WriteLine("\nInvalid input! \n");
-
-            PrintDifficultyPromt();
-
-            difficultyInput = Console.ReadLine();
-        }
-
-        int difficultyLevel = int.Parse(difficultyInput);
-
-        Console.WriteLine();    //  Skip a line
-
-        PrintDifficulty(difficultyLevel);
-
-        //  Print current state of board
-        grid.PrintCurrentGrid();
-
-        //  Prompt user for tictactoe input & evaluate input for validity, if not, repeat request
-        Console.WriteLine("What is your move?");
-        //  Prompt for row
-        PromptTicTacToeInput(true);
-        string rowInput = Console.ReadLine();
-        while (!IsTicTacToeInputValid(rowInput))
-        {
-            Console.WriteLine("\nInvalid input!");
-            PromptTicTacToeInput(true);
-            rowInput = Console.ReadLine();
-        }
-        int rowNum = int.Parse(rowInput);
-
-        //  Prompt for column
-        PromptTicTacToeInput(false);
-        string columnInput = Console.ReadLine();
-        while (!IsTicTacToeInputValid(columnInput))
-        {
-            Console.WriteLine("\nInvalid input!");
-            PromptTicTacToeInput(false);
-            columnInput = Console.ReadLine();
-        }
-        int columnNum = int.Parse(columnInput);
-
-        //  Determine if player/computer goes first for the round
-        if (gameManager.firstPick == GameManager.GameState.PlayerTurn && gameManager.roundCounter > 1)
-        {
-            //PromptTicTacToeInput();
-            Console.ReadLine();
-        }
-        else
-        {
-            Console.WriteLine("Computer goes first");
-            gameManager.ProcessComputerTurn();
-        }
-
-        Console.WriteLine("\nThank you for playing Tic-Tac - Toe.");
+        Console.WriteLine("\nThank you for playing Tic-Tac-Toe.");
 
         Console.ReadLine();         //  Pause console so it doesn't close
     }
-
-    #region Returns true if board size input is a integer. Otherwise, return false
-    private static bool IsBoardSizeInputValid(string input)
-    {
-        // determine if input is a integer 
-        int boardSize;
-        bool isNumeric = int.TryParse(input, out boardSize);
-        if (isNumeric)
-        {
-            //  Determine if input is within valid range
-            if (boardSize > 0)
-                return true;
-            return false;
-        }
-        else
-            return false;
-    }
-    #endregion
 
     #region Returns true if difficulty input is a integer and is within valid ranges. Otherwise, return false
     private static bool IsDifficultyInputValid(string input)
@@ -150,20 +167,13 @@ class Program
     }
     #endregion
     
-    #region Prints the difficulty promt
-    private static void PrintDifficultyPromt()
+    #region Prints the difficulty prompt
+    private static void PrintDifficultyPrompt()
     {
-        Console.WriteLine("Input a difficulty level \n" +
-                "1. Easy\n" +
+        Console.Write("1. Easy\n" +
                 "2. Medium\n" +
-                "3. Hard\n");
-    }
-    #endregion
-
-    #region Prints the board size promt
-    private static void PrintBoardSizePromt()
-    {
-        Console.Write("Input board size: ");
+                "3. Hard\n" +
+                "Input a difficulty level: " );
     }
     #endregion
 
@@ -194,6 +204,19 @@ class Program
                 break;
         }
         Console.WriteLine();
+    }
+    #endregion
+
+    #region Returns true if user if they want to play again.
+    private static bool PromptUserForReplay()
+    {
+        Console.Write("\nWould you like to play again? (1 = Yes, 2 = No): ");
+        string replayInput = Console.ReadLine();
+        int replayNum = int.Parse(replayInput);
+        if (replayNum == 1)
+            return true;
+        else
+            return false;
     }
     #endregion
 }

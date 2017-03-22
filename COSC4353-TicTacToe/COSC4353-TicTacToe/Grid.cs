@@ -8,6 +8,8 @@ public class Grid
 {
     public static int GridSize;
     public static GridPoint[,] GridPoints;
+    public static List<GridPoint> EmptyGridPoints;
+    public static List<GridPoint> OccupiedGridPoints;
 
     public struct GridPoint
     {
@@ -33,6 +35,9 @@ public class Grid
     {
         GridSize = gridSize;
         GenerateGrid(GridSize);
+
+        EmptyGridPoints = GridPoints.Cast<GridPoint>().ToList();
+        OccupiedGridPoints = new List<GridPoint>();
     }
 
     //  Generate the grid points with default values
@@ -77,4 +82,28 @@ public class Grid
         }
         Console.WriteLine();    //  Skip a line
     }
+
+    //  InputGridpoint
+    public static void InputGridPoint(int x, int y, GridPoint.InputType inputType)
+    {
+        GridPoints[x,y].input = inputType;
+        GridPoints[x, y].isOccupied = true;
+
+        //  Update empty gridpoints
+        EmptyGridPoints.Remove(GridPoints[x,y]);
+
+        //  Update taken gridpoints
+        OccupiedGridPoints.Add(GridPoints[x,y]);
+    }
+
+    #region returns true if grid no longer has any spaces left. Otherwise, return false
+    public bool IsGridFull()
+    {
+        if (EmptyGridPoints.Count <= 0)
+        {
+            return true;
+        }
+        return false;
+    }
+    #endregion
 }

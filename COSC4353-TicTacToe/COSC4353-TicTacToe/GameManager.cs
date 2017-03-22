@@ -10,9 +10,9 @@ public class GameManager
     public int playerScore;
     public int computerScore;
 
-    public GameState curState;
-    public GameState firstPick;
-    public enum GameState
+    public TurnState curTurn;
+    public TurnState firstPick;
+    public enum TurnState
     {
         PlayerTurn,
         ComputerTurn,
@@ -24,22 +24,22 @@ public class GameManager
         roundCounter = 1;
         playerScore = 0;
         computerScore = 0;
-        curState = GameState.NULL;
-        firstPick = GameState.PlayerTurn;
+        curTurn = TurnState.PlayerTurn;
+        firstPick = TurnState.PlayerTurn;
     }
 
     //  returns true if the board size is greater then 3... decide winner by default and set a new game.
-    public bool CheckBoardSizeConditions()
+    public bool IsBoardSizeBigEnough()
     {
         //  if the board size is less then 3... decide winner by default and set a new game.
         if (Grid.GridSize < 3)
         {
-            if (firstPick == GameManager.GameState.PlayerTurn)
+            if (firstPick == TurnState.PlayerTurn)
                 ProcessPlayerWin();
             else
                 ProcessComputerWin();
 
-            SetupNextRound();
+            //SetupNextRound();
 
             return false;
         }
@@ -51,33 +51,54 @@ public class GameManager
         roundCounter++;
 
         //  Alternate who goes first next round
-        if (firstPick == GameState.PlayerTurn)
+        if (firstPick == TurnState.PlayerTurn)
         {
-            firstPick = GameState.ComputerTurn;
-            curState = GameState.ComputerTurn;
+            firstPick = TurnState.ComputerTurn;
+            curTurn = TurnState.ComputerTurn;
         }
         else
         {
-            firstPick = GameState.PlayerTurn;
-            curState = GameState.PlayerTurn;
+            firstPick = TurnState.PlayerTurn;
+            curTurn = TurnState.PlayerTurn;
         }
     }
     
-    public void ProcessComputerTurn()
+    //  Process the computer's turn. Determine actions based on difficulty
+    public void ProcessComputerTurn(int compDifficulty)
     {
+        //  EASY - randomly input empty space
+        if (compDifficulty == 1)
+        {
+            Random random = new Random();
+            int randomIndex = random.Next(0, Grid.EmptyGridPoints.Count);
+            Console.WriteLine(Grid.EmptyGridPoints[randomIndex].xCoord + " " + Grid.EmptyGridPoints[randomIndex].yCoord);
+            Grid.InputGridPoint(Grid.EmptyGridPoints[randomIndex].xCoord, Grid.EmptyGridPoints[randomIndex].yCoord, Grid.GridPoint.InputType.O);
+        }
 
+        //  MEDIUM
+        else if (compDifficulty == 2)
+        {
+
+        }
+
+        //  HARD
+        else if (compDifficulty == 3)
+        {
+
+        }
     }
 
     //  Process things when player wins
     public void ProcessPlayerWin()
     {
+        Console.WriteLine("You win!");
         playerScore++;
     }
 
     //  Process things when computer wins
     public void ProcessComputerWin()
     {
+        Console.WriteLine("I win!");
         computerScore++;
     }
-
 }
