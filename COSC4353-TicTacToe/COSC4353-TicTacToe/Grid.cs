@@ -45,9 +45,9 @@ public class Grid
     {
         GridPoints = new GridPoint[gridSize, gridSize];
 
-        for (int x = 0; x < gridSize; x++)
+        for (int y = 0; y < gridSize; y++)
         {
-            for (int y = 0; y < gridSize; y++)
+            for (int x = 0; x < gridSize; x++)
             {
                 GridPoints[x, y] = new GridPoint(x, y, false, GridPoint.InputType.NULL);
             }
@@ -70,13 +70,16 @@ public class Grid
             Console.Write(y + " ");
             for (int x = 0; x < GridSize; x++)
             {
-                if (GridPoints[y, x].input == GridPoint.InputType.NULL)
+                if (GridPoints[x, y].input == GridPoint.InputType.NULL)
                 {
                     Console.Write("[" + " " + "]");
                     //Console.Write("[" + GridPoints[x, y].xCoord + GridPoints[x, y].yCoord + "]");
                 }
                 else
+                {
                     Console.Write("[" + GridPoints[x,y].input + "]");
+                    //Console.Write("[" + GridPoints[y, x].xCoord + GridPoints[y, x].yCoord + "]");
+                }
             }
             Console.WriteLine();
         }
@@ -86,14 +89,14 @@ public class Grid
     //  InputGridpoint
     public static void InputGridPoint(int x, int y, GridPoint.InputType inputType)
     {
-        GridPoints[x,y].input = inputType;
+        GridPoints[x, y].input = inputType;
         GridPoints[x, y].isOccupied = true;
 
         //  Update empty gridpoints
-        EmptyGridPoints.Remove(GridPoints[x,y]);
+        EmptyGridPoints.Remove(GridPoints[x, y]);
 
         //  Update taken gridpoints
-        OccupiedGridPoints.Add(GridPoints[x,y]);
+        OccupiedGridPoints.Add(GridPoints[x, y]);
     }
 
     #region returns true if grid no longer has any spaces left. Otherwise, return false

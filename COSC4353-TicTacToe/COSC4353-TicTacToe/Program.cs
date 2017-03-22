@@ -87,7 +87,7 @@ class Program
                         if (!Grid.GridPoints[columnNum, rowNum].isOccupied)
                         {
                             //  Input 'X' in the location for player
-                            Grid.InputGridPoint(rowNum, columnNum, Grid.GridPoint.InputType.X);
+                            Grid.InputGridPoint(columnNum, rowNum, Grid.GridPoint.InputType.X);
 
                             //  Set the next turn to computer
                             gameManager.curTurn = GameManager.TurnState.ComputerTurn;
@@ -181,9 +181,9 @@ class Program
     private static void PromptTicTacToeInput(bool promptRow)
     {
         if (promptRow)
-            Console.Write("Enter a row number from 0 to " + (Grid.GridSize - 1) + ": ");
+            Console.Write("Enter a row number: "); //from 0 to " + (Grid.GridSize - 1) + ": ");
         else
-            Console.Write("Enter a column number from 0 to " + (Grid.GridSize-1) + ": ");
+            Console.Write("Enter a column number: "); //from 0 to " + (Grid.GridSize - 1) + ": ");
     }
     #endregion
 

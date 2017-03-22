@@ -71,7 +71,9 @@ public class GameManager
         {
             Random random = new Random();
             int randomIndex = random.Next(0, Grid.EmptyGridPoints.Count);
-            Console.WriteLine(Grid.EmptyGridPoints[randomIndex].xCoord + " " + Grid.EmptyGridPoints[randomIndex].yCoord);
+
+            Console.WriteLine("Row " + Grid.EmptyGridPoints[randomIndex].yCoord + ", Column " + Grid.EmptyGridPoints[randomIndex].xCoord);
+
             Grid.InputGridPoint(Grid.EmptyGridPoints[randomIndex].xCoord, Grid.EmptyGridPoints[randomIndex].yCoord, Grid.GridPoint.InputType.O);
         }
 
