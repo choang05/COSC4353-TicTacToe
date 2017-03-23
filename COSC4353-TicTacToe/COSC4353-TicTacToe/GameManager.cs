@@ -106,25 +106,54 @@ public class GameManager
     #region Returns the game condition
     public GameConditions GetWinCondition()
     {
-        //  Check if the grid is full
-        Console.WriteLine(GetLength(0, Grid.GridPoints[0,0], Direction.Right, Grid.GridPoints[0,0].input));
-        if (Grid.EmptyGridPoints.Count <= 0)
+        //Console.WriteLine(GetLength(1, Grid.GridPoints[0,0], Direction.Right, Grid.GridPoints[0,0].input));
+
+        //  Loop through grid and check for completed inputs
+        for (int i = 0; i < Grid.OccupiedGridPoints.Count; i++)
         {
+            //  Check board for completed 'X's
+            if (GetLength(1, Grid.GridPoints[Grid.OccupiedGridPoints[i].xCoord, Grid.OccupiedGridPoints[i].yCoord], Direction.Top, Grid.GridPoint.InputType.X) >= Grid.GridSize-1
+                || GetLength(1, Grid.GridPoints[Grid.OccupiedGridPoints[i].xCoord, Grid.OccupiedGridPoints[i].yCoord], Direction.Right, Grid.GridPoint.InputType.X) >= Grid.GridSize - 1
+                || GetLength(1, Grid.GridPoints[Grid.OccupiedGridPoints[i].xCoord, Grid.OccupiedGridPoints[i].yCoord], Direction.Bottom, Grid.GridPoint.InputType.X) >= Grid.GridSize - 1
+                || GetLength(1, Grid.GridPoints[Grid.OccupiedGridPoints[i].xCoord, Grid.OccupiedGridPoints[i].yCoord], Direction.Left, Grid.GridPoint.InputType.X) >= Grid.GridSize - 1)
+            {
+                return GameConditions.PlayerWins;
+            }
+            //  Check board for completed 'O's
+            else if (GetLength(1, Grid.GridPoints[Grid.OccupiedGridPoints[i].xCoord, Grid.OccupiedGridPoints[i].yCoord], Direction.Top, Grid.GridPoint.InputType.O) >= Grid.GridSize - 1
+                || GetLength(1, Grid.GridPoints[Grid.OccupiedGridPoints[i].xCoord, Grid.OccupiedGridPoints[i].yCoord], Direction.Right, Grid.GridPoint.InputType.O) >= Grid.GridSize - 1
+                || GetLength(1, Grid.GridPoints[Grid.OccupiedGridPoints[i].xCoord, Grid.OccupiedGridPoints[i].yCoord], Direction.Bottom, Grid.GridPoint.InputType.O) >= Grid.GridSize - 1
+                || GetLength(1, Grid.GridPoints[Grid.OccupiedGridPoints[i].xCoord, Grid.OccupiedGridPoints[i].yCoord], Direction.Left, Grid.GridPoint.InputType.O) >= Grid.GridSize - 1)
+            {
+                return GameConditions.ComputerWins;
+            }
+            //  Else if the board is full and all the points have been checked... then its a tie
+            else if (i >= Grid.GridPoints.Length-1 && Grid.IsGridFull())
+            {
+                return GameConditions.Tie;
+            }
         }
 
         return GameConditions.NULL;
     }
     #endregion
 
-    //  Recursivly return the length of the inputtype in a given direction and input type
-    int GetLength(int length, Grid.GridPoint gridPoint, Direction dir, Grid.GridPoint.InputType inputType)
+    //  Recursivly return the length of the input type in a given direction and input type
+    private int GetLength(int length, Grid.GridPoint gridPoint, Direction dir, Grid.GridPoint.InputType inputType)
     {
+        //  Recursivly count top neighbors
         if (dir == Direction.Top && gridPoint.yCoord - 1 >= 0 && Grid.GridPoints[gridPoint.xCoord, gridPoint.yCoord-1].input == inputType)
             return length + GetLength(length, gridPoint.GetTopNeighbor(), dir, inputType);
+
+        //  Recursivly count right neighbors
         else if (dir == Direction.Right && gridPoint.xCoord + 1 < Grid.GridSize && Grid.GridPoints[gridPoint.xCoord + 1, gridPoint.yCoord].input == inputType)
             return length + GetLength(length, gridPoint.GetRightNeighbor(), dir, inputType);
+
+        //  Recursivly count bottom neighbors
         else if (dir == Direction.Bottom && gridPoint.yCoord + 1 < Grid.GridSize && Grid.GridPoints[gridPoint.xCoord, gridPoint.yCoord + 1].input == inputType)
             return length + GetLength(length, gridPoint.GetBottomNeighbor(), dir, inputType);
+
+        //  Recursivly count left neighbors
         else if (dir == Direction.Left && gridPoint.xCoord - 1 >= 0 && Grid.GridPoints[gridPoint.xCoord - 1, gridPoint.yCoord].input == inputType)
             return length + GetLength(length, gridPoint.GetLeftNeighbor(), dir, inputType);
         return 0;
@@ -133,20 +162,20 @@ public class GameManager
     //  Process things when player wins
     public void ProcessPlayerWin()
     {
-        Console.WriteLine("You win!");
+        Console.WriteLine("\nYou win!");
         playerScore++;
     }
 
     //  Process things when computer wins
     public void ProcessComputerWin()
     {
-        Console.WriteLine("I win!");
+        Console.WriteLine("\nI win!");
         computerScore++;
     }
 
     //  Process things when round ties
     public void ProcessTie()
     {
-        Console.WriteLine("It's a tie!");
+        Console.WriteLine("\nIt's a tie!");
     }
 }

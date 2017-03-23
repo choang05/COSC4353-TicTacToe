@@ -123,7 +123,7 @@ public class Grid
     #endregion 
 
     #region returns true if grid no longer has any spaces left. Otherwise, return false
-    public bool IsGridFull()
+    public static bool IsGridFull()
     {
         if (EmptyGridPoints.Count <= 0)
         {

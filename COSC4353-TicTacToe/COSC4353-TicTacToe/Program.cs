@@ -16,6 +16,22 @@ class Program
         //  Initialize game manager
         GameManager gameManager = new GameManager();
 
+        //  Prompt user for difficulty level & evaluate input for validity, if not, repeat request
+        PrintDifficultyPrompt();
+        string difficultyInput = Console.ReadLine();
+        while (!IsDifficultyInputValid(difficultyInput))
+        {
+            Console.WriteLine("\nInvalid input! \n");
+
+            PrintDifficultyPrompt();
+
+            difficultyInput = Console.ReadLine();
+        }
+
+        int difficultyLevel = int.Parse(difficultyInput);
+
+        PrintDifficulty(difficultyLevel);
+
         while (true)
         {
             //  Initialize grid given board size
@@ -28,24 +44,8 @@ class Program
                 break;
             }
 
-            //  Prompt user for difficulty level & evaluate input for validity, if not, repeat request
-            PrintDifficultyPrompt();
-            string difficultyInput = Console.ReadLine();
-            while (!IsDifficultyInputValid(difficultyInput))
-            {
-                Console.WriteLine("\nInvalid input! \n");
-
-                PrintDifficultyPrompt();
-
-                difficultyInput = Console.ReadLine();
-            }
-
-            int difficultyLevel = int.Parse(difficultyInput);
-
-            PrintDifficulty(difficultyLevel);
-
             //  Print current round
-            Console.WriteLine("----- ROUND " + gameManager.roundCounter + " -----\n");
+            Console.WriteLine("\n----- ROUND " + gameManager.roundCounter + " -----\n");
 
             //  Print which player goes first
             if (gameManager.curTurn == GameManager.TurnState.PlayerTurn)
@@ -54,12 +54,12 @@ class Program
                 Console.WriteLine("Computer goes first!");
 
             //  While the grid is not full (round not finished), loop
-            while (grid.IsGridFull() == false)
+            while (Grid.IsGridFull() == false)
             {
                 //  Print current state of board
                 grid.PrintCurrentGrid();
 
-                //  Determine if player/computer goes first for the round
+                //  Determine if player/computer whos turn it is and process their move
                 if (gameManager.curTurn == GameManager.TurnState.PlayerTurn)
                 {
                     //  Prompt user for tictactoe input & evaluate input for validity, if not, repeat request
