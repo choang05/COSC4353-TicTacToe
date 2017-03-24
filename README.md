@@ -6,11 +6,6 @@ Problem Statement:
 ------------------
 We want to write an application to play Tic-Tac-Toe (Naughts and Crosses, Tic-Tac-Toe, X's and O's).
 
-ONLY PROVIDE THE DESIGN TO IMPLEMENT THE GAME. Provide followings:
-	- Class diagram
-	- Sequence diagram
-	- Flow chart
-
 Design considerations:
 ----------------------
 The most common board size in two-dimensional Tic-Tac-Toe is 3x3, meaning a square grid with three rows and three columns. 
