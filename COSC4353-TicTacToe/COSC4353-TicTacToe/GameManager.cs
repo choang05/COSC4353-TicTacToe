@@ -137,32 +137,35 @@ public class GameManager
             {
                 //  Create a weight of the gridpoint based on neighboring inputs
                 int weight = 0;
-                weight += GetLength(Grid.GridPoints[Grid.EmptyGridPoints[i].xCoord, Grid.EmptyGridPoints[i].yCoord], Direction.Top, Grid.GridPoint.InputType.O);
-                weight += GetLength(Grid.GridPoints[Grid.EmptyGridPoints[i].xCoord, Grid.EmptyGridPoints[i].yCoord], Direction.Right, Grid.GridPoint.InputType.O);
-                weight += GetLength(Grid.GridPoints[Grid.EmptyGridPoints[i].xCoord, Grid.EmptyGridPoints[i].yCoord], Direction.Bottom, Grid.GridPoint.InputType.O);
-                weight += GetLength(Grid.GridPoints[Grid.EmptyGridPoints[i].xCoord, Grid.EmptyGridPoints[i].yCoord], Direction.Left, Grid.GridPoint.InputType.O);
-                weight += GetLength(Grid.GridPoints[Grid.EmptyGridPoints[i].xCoord, Grid.EmptyGridPoints[i].yCoord], Direction.DiagonalTopToBottomRight, Grid.GridPoint.InputType.O);
-                weight += GetLength(Grid.GridPoints[Grid.EmptyGridPoints[i].xCoord, Grid.EmptyGridPoints[i].yCoord], Direction.DiagonalTopToBottomLeft, Grid.GridPoint.InputType.O);
-                weight += GetLength(Grid.GridPoints[Grid.EmptyGridPoints[i].xCoord, Grid.EmptyGridPoints[i].yCoord], Direction.DiagonalBottomToTopRight, Grid.GridPoint.InputType.O);
-                weight += GetLength(Grid.GridPoints[Grid.EmptyGridPoints[i].xCoord, Grid.EmptyGridPoints[i].yCoord], Direction.DiagonalBottomToTopLeft, Grid.GridPoint.InputType.O);
+                int oWeight = 15;
+                int nullWeight = 5;
+                int xWeight = 10;
+                weight += oWeight + GetLength(Grid.GridPoints[Grid.EmptyGridPoints[i].xCoord, Grid.EmptyGridPoints[i].yCoord], Direction.Top, Grid.GridPoint.InputType.O);
+                weight += oWeight + GetLength(Grid.GridPoints[Grid.EmptyGridPoints[i].xCoord, Grid.EmptyGridPoints[i].yCoord], Direction.Right, Grid.GridPoint.InputType.O);
+                weight += oWeight + GetLength(Grid.GridPoints[Grid.EmptyGridPoints[i].xCoord, Grid.EmptyGridPoints[i].yCoord], Direction.Bottom, Grid.GridPoint.InputType.O);
+                weight += oWeight + GetLength(Grid.GridPoints[Grid.EmptyGridPoints[i].xCoord, Grid.EmptyGridPoints[i].yCoord], Direction.Left, Grid.GridPoint.InputType.O);
+                weight += oWeight + GetLength(Grid.GridPoints[Grid.EmptyGridPoints[i].xCoord, Grid.EmptyGridPoints[i].yCoord], Direction.DiagonalTopToBottomRight, Grid.GridPoint.InputType.O);
+                weight += oWeight + GetLength(Grid.GridPoints[Grid.EmptyGridPoints[i].xCoord, Grid.EmptyGridPoints[i].yCoord], Direction.DiagonalTopToBottomLeft, Grid.GridPoint.InputType.O);
+                weight += oWeight + GetLength(Grid.GridPoints[Grid.EmptyGridPoints[i].xCoord, Grid.EmptyGridPoints[i].yCoord], Direction.DiagonalBottomToTopRight, Grid.GridPoint.InputType.O);
+                weight += oWeight + GetLength(Grid.GridPoints[Grid.EmptyGridPoints[i].xCoord, Grid.EmptyGridPoints[i].yCoord], Direction.DiagonalBottomToTopLeft, Grid.GridPoint.InputType.O);
                 //  Add weights for empty spaces
-                weight += GetLength(Grid.GridPoints[Grid.EmptyGridPoints[i].xCoord, Grid.EmptyGridPoints[i].yCoord], Direction.Top, Grid.GridPoint.InputType.NULL);
-                weight += GetLength(Grid.GridPoints[Grid.EmptyGridPoints[i].xCoord, Grid.EmptyGridPoints[i].yCoord], Direction.Right, Grid.GridPoint.InputType.NULL);
-                weight += GetLength(Grid.GridPoints[Grid.EmptyGridPoints[i].xCoord, Grid.EmptyGridPoints[i].yCoord], Direction.Bottom, Grid.GridPoint.InputType.NULL);
-                weight += GetLength(Grid.GridPoints[Grid.EmptyGridPoints[i].xCoord, Grid.EmptyGridPoints[i].yCoord], Direction.Left, Grid.GridPoint.InputType.NULL);
-                weight += GetLength(Grid.GridPoints[Grid.EmptyGridPoints[i].xCoord, Grid.EmptyGridPoints[i].yCoord], Direction.DiagonalTopToBottomRight, Grid.GridPoint.InputType.NULL);
-                weight += GetLength(Grid.GridPoints[Grid.EmptyGridPoints[i].xCoord, Grid.EmptyGridPoints[i].yCoord], Direction.DiagonalTopToBottomLeft, Grid.GridPoint.InputType.NULL);
-                weight += GetLength(Grid.GridPoints[Grid.EmptyGridPoints[i].xCoord, Grid.EmptyGridPoints[i].yCoord], Direction.DiagonalBottomToTopRight, Grid.GridPoint.InputType.NULL);
-                weight += GetLength(Grid.GridPoints[Grid.EmptyGridPoints[i].xCoord, Grid.EmptyGridPoints[i].yCoord], Direction.DiagonalBottomToTopLeft, Grid.GridPoint.InputType.NULL);
+                weight += nullWeight + GetLength(Grid.GridPoints[Grid.EmptyGridPoints[i].xCoord, Grid.EmptyGridPoints[i].yCoord], Direction.Top, Grid.GridPoint.InputType.NULL);
+                weight += nullWeight + GetLength(Grid.GridPoints[Grid.EmptyGridPoints[i].xCoord, Grid.EmptyGridPoints[i].yCoord], Direction.Right, Grid.GridPoint.InputType.NULL);
+                weight += nullWeight + GetLength(Grid.GridPoints[Grid.EmptyGridPoints[i].xCoord, Grid.EmptyGridPoints[i].yCoord], Direction.Bottom, Grid.GridPoint.InputType.NULL);
+                weight += nullWeight + GetLength(Grid.GridPoints[Grid.EmptyGridPoints[i].xCoord, Grid.EmptyGridPoints[i].yCoord], Direction.Left, Grid.GridPoint.InputType.NULL);
+                weight += nullWeight + GetLength(Grid.GridPoints[Grid.EmptyGridPoints[i].xCoord, Grid.EmptyGridPoints[i].yCoord], Direction.DiagonalTopToBottomRight, Grid.GridPoint.InputType.NULL);
+                weight += nullWeight + GetLength(Grid.GridPoints[Grid.EmptyGridPoints[i].xCoord, Grid.EmptyGridPoints[i].yCoord], Direction.DiagonalTopToBottomLeft, Grid.GridPoint.InputType.NULL);
+                weight += nullWeight + GetLength(Grid.GridPoints[Grid.EmptyGridPoints[i].xCoord, Grid.EmptyGridPoints[i].yCoord], Direction.DiagonalBottomToTopRight, Grid.GridPoint.InputType.NULL);
+                weight += nullWeight + GetLength(Grid.GridPoints[Grid.EmptyGridPoints[i].xCoord, Grid.EmptyGridPoints[i].yCoord], Direction.DiagonalBottomToTopLeft, Grid.GridPoint.InputType.NULL);
                 //  Add weights for player spaces to block them
-                weight += GetLength(Grid.GridPoints[Grid.EmptyGridPoints[i].xCoord, Grid.EmptyGridPoints[i].yCoord], Direction.Top, Grid.GridPoint.InputType.X);
-                weight += GetLength(Grid.GridPoints[Grid.EmptyGridPoints[i].xCoord, Grid.EmptyGridPoints[i].yCoord], Direction.Right, Grid.GridPoint.InputType.X);
-                weight += GetLength(Grid.GridPoints[Grid.EmptyGridPoints[i].xCoord, Grid.EmptyGridPoints[i].yCoord], Direction.Bottom, Grid.GridPoint.InputType.X);
-                weight += GetLength(Grid.GridPoints[Grid.EmptyGridPoints[i].xCoord, Grid.EmptyGridPoints[i].yCoord], Direction.Left, Grid.GridPoint.InputType.X);
-                weight += GetLength(Grid.GridPoints[Grid.EmptyGridPoints[i].xCoord, Grid.EmptyGridPoints[i].yCoord], Direction.DiagonalTopToBottomRight, Grid.GridPoint.InputType.X);
-                weight += GetLength(Grid.GridPoints[Grid.EmptyGridPoints[i].xCoord, Grid.EmptyGridPoints[i].yCoord], Direction.DiagonalTopToBottomLeft, Grid.GridPoint.InputType.X);
-                weight += GetLength(Grid.GridPoints[Grid.EmptyGridPoints[i].xCoord, Grid.EmptyGridPoints[i].yCoord], Direction.DiagonalBottomToTopRight, Grid.GridPoint.InputType.X);
-                weight += GetLength(Grid.GridPoints[Grid.EmptyGridPoints[i].xCoord, Grid.EmptyGridPoints[i].yCoord], Direction.DiagonalBottomToTopLeft, Grid.GridPoint.InputType.X);
+                weight += xWeight + GetLength(Grid.GridPoints[Grid.EmptyGridPoints[i].xCoord, Grid.EmptyGridPoints[i].yCoord], Direction.Top, Grid.GridPoint.InputType.X);
+                weight += xWeight + GetLength(Grid.GridPoints[Grid.EmptyGridPoints[i].xCoord, Grid.EmptyGridPoints[i].yCoord], Direction.Right, Grid.GridPoint.InputType.X);
+                weight += xWeight + GetLength(Grid.GridPoints[Grid.EmptyGridPoints[i].xCoord, Grid.EmptyGridPoints[i].yCoord], Direction.Bottom, Grid.GridPoint.InputType.X);
+                weight += xWeight + GetLength(Grid.GridPoints[Grid.EmptyGridPoints[i].xCoord, Grid.EmptyGridPoints[i].yCoord], Direction.Left, Grid.GridPoint.InputType.X);
+                weight += xWeight + GetLength(Grid.GridPoints[Grid.EmptyGridPoints[i].xCoord, Grid.EmptyGridPoints[i].yCoord], Direction.DiagonalTopToBottomRight, Grid.GridPoint.InputType.X);
+                weight += xWeight + GetLength(Grid.GridPoints[Grid.EmptyGridPoints[i].xCoord, Grid.EmptyGridPoints[i].yCoord], Direction.DiagonalTopToBottomLeft, Grid.GridPoint.InputType.X);
+                weight += xWeight + GetLength(Grid.GridPoints[Grid.EmptyGridPoints[i].xCoord, Grid.EmptyGridPoints[i].yCoord], Direction.DiagonalBottomToTopRight, Grid.GridPoint.InputType.X);
+                weight += xWeight + GetLength(Grid.GridPoints[Grid.EmptyGridPoints[i].xCoord, Grid.EmptyGridPoints[i].yCoord], Direction.DiagonalBottomToTopLeft, Grid.GridPoint.InputType.X);
 
                 //  if the gridpoints weight is higher then the current, update the most potential gridpoint and current weight
                 if (weight > curHighestWeight)
