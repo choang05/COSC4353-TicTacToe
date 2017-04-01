@@ -45,6 +45,22 @@ public class Grid
         {
             return GridPoints[xCoord - 1, yCoord];
         }
+        public GridPoint GetTopToBottomRightNeighbor()
+        {
+            return GridPoints[xCoord + 1, yCoord + 1];
+        }
+        public GridPoint GetTopToBottomLeftNeighbor()
+        {
+            return GridPoints[xCoord - 1, yCoord + 1];
+        }
+        public GridPoint GetBottomToTopRightNeighbor()
+        {
+            return GridPoints[xCoord + 1, yCoord - 1];
+        }
+        public GridPoint GetBottomToTopLeftNeighbor()
+        {
+            return GridPoints[xCoord - 1, yCoord - 1];
+        }
     }
 
     //  Constructor

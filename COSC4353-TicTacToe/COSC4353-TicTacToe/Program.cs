@@ -171,6 +171,14 @@ class Program
         }
         #endregion
 
+        //  Print end of game results
+        if (gameManager.playerScore > gameManager.computerScore)
+            Console.WriteLine("\nCongradulations! You beat the computer!");
+        else if (gameManager.playerScore < gameManager.computerScore)
+            Console.WriteLine("\nThe computer beat you! Better luck next time!");
+        else
+            Console.WriteLine("\nYou and the computer tied! Good game!");
+
         Console.WriteLine("\nThank you for playing Tic-Tac-Toe.");
 
         Console.ReadLine();         //  Pause console so it doesn't close
@@ -203,6 +211,25 @@ class Program
         {
             //  Determine if input is within valid range
             if (ticTacToeNum >= 0 && ticTacToeNum < Grid.GridSize)
+            {
+                return true;
+            }
+            return false;
+        }
+        return false;
+    }
+    #endregion
+
+    #region IsReplayInputValid(): Returns true if replay input is a integer and is within valid ranges. Otherwise, return false
+    private static bool IsReplayInputValid(string input)
+    {
+        // determine if input is a integer 
+        int replayNum;
+        bool isNumeric = int.TryParse(input, out replayNum);
+        if (isNumeric)
+        {
+            //  Determine if input is within valid range
+            if (replayNum == 1 || replayNum == 2)
             {
                 return true;
             }
@@ -257,7 +284,14 @@ class Program
     {
         Console.Write("\nWould you like to play again? (1 = Yes, 2 = No): ");
         string replayInput = Console.ReadLine();
+        while (!IsReplayInputValid(replayInput))
+        {
+            Console.WriteLine("\nInvalid input!");
+            Console.Write("\nWould you like to play again? (1 = Yes, 2 = No): ");
+            replayInput = Console.ReadLine();
+        }
         int replayNum = int.Parse(replayInput);
+
         if (replayNum == 1)
             return true;
         else
