@@ -60,7 +60,7 @@ public class Grid
         OccupiedGridPoints = new List<GridPoint>();
     }
 
-    #region Generate the grid points with default values
+    #region GenerateGrid(): Generate the grid points with default values
     public void GenerateGrid(int gridSize)
     {
         GridPoints = new GridPoint[gridSize, gridSize];
@@ -75,7 +75,7 @@ public class Grid
     }
     #endregion
 
-    #region Prints the current state of the grid
+    #region PrintCurrentGrid(): Prints the current state of the grid
     public void PrintCurrentGrid()
     {
         Console.WriteLine();    //  Skip a line
@@ -94,12 +94,12 @@ public class Grid
                 if (GridPoints[x, y].input == GridPoint.InputType.NULL)
                 {
                     Console.Write("[" + " " + "]");
-                    //Console.Write("[" + GridPoints[x, y].xCoord + GridPoints[x, y].yCoord + "]");
+                    //Console.Write("(" + GridPoints[x, y].xCoord + GridPoints[x, y].yCoord + ")");
                 }
                 else
                 {
-                    Console.Write("[" + GridPoints[x,y].input + "]");
-                    //Console.Write("[" + GridPoints[y, x].xCoord + GridPoints[y, x].yCoord + "]");
+                    Console.Write("[" + GridPoints[x, y].input + "]");
+                    //Console.Write("(" + GridPoints[x, y].xCoord + GridPoints[x, y].yCoord + ")");
                 }
             }
             Console.WriteLine();
@@ -108,7 +108,7 @@ public class Grid
     }
     #endregion
 
-    #region Inputs a inputtype in the GridPoint at the given x, y, and the inputtype 
+    #region InputGridPoint(): Inputs a inputtype in the GridPoint at the given x, y, and the inputtype 
     public static void InputGridPoint(int x, int y, GridPoint.InputType inputType)
     {
         GridPoints[x, y].input = inputType;
@@ -122,7 +122,7 @@ public class Grid
     }
     #endregion 
 
-    #region returns true if grid no longer has any spaces left. Otherwise, return false
+    #region IsGridFull(): returns true if grid no longer has any spaces left. Otherwise, return false
     public static bool IsGridFull()
     {
         if (EmptyGridPoints.Count <= 0)
@@ -133,7 +133,7 @@ public class Grid
     }
     #endregion
 
-    #region Returns all gridpoints that are empty
+    #region GetEmptyGridPoints(): Returns all gridpoints that are empty
     public static List<GridPoint> GetEmptyGridPoints()
     {
         List<GridPoint> emptyGridPoints = new List<GridPoint>();

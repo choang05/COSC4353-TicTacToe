@@ -22,12 +22,12 @@ public class GameManager
         PlayerWins, ComputerWins, Tie, NULL
     };
 
-    Direction direction;
     enum Direction
     {
         Top, Right, Bottom, Left
     };
 
+    //  Constructor
     public GameManager()
     {
         roundCounter = 1;
@@ -37,7 +37,7 @@ public class GameManager
         firstPick = TurnState.PlayerTurn;
     }
 
-    //  returns true if the board size is greater then 3... decide winner by default and set a new game.
+    #region IsBoardSizeBigEnough(): returns true if the board size is greater then 3... decide winner by default and set a new game.
     public bool IsBoardSizeBigEnough()
     {
         //  if the board size is less then 3... decide winner by default and set a new game.
@@ -54,7 +54,9 @@ public class GameManager
         }
         return true;
     }
+    #endregion
 
+    #region SetupNextRound(): Sets up the game for another round and alternates first pick
     public void SetupNextRound()
     {
         roundCounter++;
@@ -71,8 +73,9 @@ public class GameManager
             curTurn = TurnState.PlayerTurn;
         }
     }
+    #endregion
 
-    #region Process the computer's turn. Determine actions based on difficulty
+    #region ProcessComputerTurn(): Process the computer's turn. Determine actions based on difficulty
     public void ProcessComputerTurn(int compDifficulty)
     {
         #region  EASY - randomly input empty space
@@ -103,27 +106,35 @@ public class GameManager
     }
     #endregion
 
-    #region Returns the game condition
+    #region GetWinCondition(): Returns the game's current win condition if any
     public GameConditions GetWinCondition()
     {
-        //Console.WriteLine(GetLength(1, Grid.GridPoints[0,0], Direction.Right, Grid.GridPoints[0,0].input));
-
+        //Console.WriteLine(GetLength(1, Grid.GridPoints[0,0], Direction.Right, Grid.GridPoints[0,0].input) + " ");
         //  Loop through grid and check for completed inputs
         for (int i = 0; i < Grid.OccupiedGridPoints.Count; i++)
         {
+            //Console.WriteLine("(" + Grid.OccupiedGridPoints[i].xCoord + "," + Grid.OccupiedGridPoints[i].yCoord + "): " + Grid.OccupiedGridPoints[i].input);
+            //if (Grid.OccupiedGridPoints[i].input == Grid.GridPoint.InputType.X)
+            //{
+            //    Console.WriteLine("  Top: " + GetLength(Grid.GridPoints[Grid.OccupiedGridPoints[i].xCoord, Grid.OccupiedGridPoints[i].yCoord], Direction.Top, Grid.GridPoint.InputType.X));
+            //    Console.WriteLine("  Right: " + GetLength(Grid.GridPoints[Grid.OccupiedGridPoints[i].xCoord, Grid.OccupiedGridPoints[i].yCoord], Direction.Right, Grid.GridPoint.InputType.X));
+            //    Console.WriteLine("  Bottom: " + GetLength(Grid.GridPoints[Grid.OccupiedGridPoints[i].xCoord, Grid.OccupiedGridPoints[i].yCoord], Direction.Bottom, Grid.GridPoint.InputType.X));
+            //    Console.WriteLine("  Left: " + GetLength(Grid.GridPoints[Grid.OccupiedGridPoints[i].xCoord, Grid.OccupiedGridPoints[i].yCoord], Direction.Left, Grid.GridPoint.InputType.X));
+            //}
+
             //  Check board for completed 'X's
-            if (GetLength(1, Grid.GridPoints[Grid.OccupiedGridPoints[i].xCoord, Grid.OccupiedGridPoints[i].yCoord], Direction.Top, Grid.GridPoint.InputType.X) >= Grid.GridSize-1
-                || GetLength(1, Grid.GridPoints[Grid.OccupiedGridPoints[i].xCoord, Grid.OccupiedGridPoints[i].yCoord], Direction.Right, Grid.GridPoint.InputType.X) >= Grid.GridSize - 1
-                || GetLength(1, Grid.GridPoints[Grid.OccupiedGridPoints[i].xCoord, Grid.OccupiedGridPoints[i].yCoord], Direction.Bottom, Grid.GridPoint.InputType.X) >= Grid.GridSize - 1
-                || GetLength(1, Grid.GridPoints[Grid.OccupiedGridPoints[i].xCoord, Grid.OccupiedGridPoints[i].yCoord], Direction.Left, Grid.GridPoint.InputType.X) >= Grid.GridSize - 1)
+            if ((Grid.OccupiedGridPoints[i].input == Grid.GridPoint.InputType.X && GetLength(Grid.GridPoints[Grid.OccupiedGridPoints[i].xCoord, Grid.OccupiedGridPoints[i].yCoord], Direction.Top, Grid.GridPoint.InputType.X) >= Grid.GridSize - 1)
+                || (Grid.OccupiedGridPoints[i].input == Grid.GridPoint.InputType.X && GetLength(Grid.GridPoints[Grid.OccupiedGridPoints[i].xCoord, Grid.OccupiedGridPoints[i].yCoord], Direction.Right, Grid.GridPoint.InputType.X) >= Grid.GridSize - 1)
+                || (Grid.OccupiedGridPoints[i].input == Grid.GridPoint.InputType.X && GetLength(Grid.GridPoints[Grid.OccupiedGridPoints[i].xCoord, Grid.OccupiedGridPoints[i].yCoord], Direction.Bottom, Grid.GridPoint.InputType.X) >= Grid.GridSize - 1)
+                || (Grid.OccupiedGridPoints[i].input == Grid.GridPoint.InputType.X && GetLength(Grid.GridPoints[Grid.OccupiedGridPoints[i].xCoord, Grid.OccupiedGridPoints[i].yCoord], Direction.Left, Grid.GridPoint.InputType.X) >= Grid.GridSize - 1))
             {
                 return GameConditions.PlayerWins;
             }
             //  Check board for completed 'O's
-            else if (GetLength(1, Grid.GridPoints[Grid.OccupiedGridPoints[i].xCoord, Grid.OccupiedGridPoints[i].yCoord], Direction.Top, Grid.GridPoint.InputType.O) >= Grid.GridSize - 1
-                || GetLength(1, Grid.GridPoints[Grid.OccupiedGridPoints[i].xCoord, Grid.OccupiedGridPoints[i].yCoord], Direction.Right, Grid.GridPoint.InputType.O) >= Grid.GridSize - 1
-                || GetLength(1, Grid.GridPoints[Grid.OccupiedGridPoints[i].xCoord, Grid.OccupiedGridPoints[i].yCoord], Direction.Bottom, Grid.GridPoint.InputType.O) >= Grid.GridSize - 1
-                || GetLength(1, Grid.GridPoints[Grid.OccupiedGridPoints[i].xCoord, Grid.OccupiedGridPoints[i].yCoord], Direction.Left, Grid.GridPoint.InputType.O) >= Grid.GridSize - 1)
+            else if ((Grid.OccupiedGridPoints[i].input == Grid.GridPoint.InputType.O && GetLength(Grid.GridPoints[Grid.OccupiedGridPoints[i].xCoord, Grid.OccupiedGridPoints[i].yCoord], Direction.Top, Grid.GridPoint.InputType.O) >= Grid.GridSize - 1)
+                || (Grid.OccupiedGridPoints[i].input == Grid.GridPoint.InputType.O && GetLength(Grid.GridPoints[Grid.OccupiedGridPoints[i].xCoord, Grid.OccupiedGridPoints[i].yCoord], Direction.Right, Grid.GridPoint.InputType.O) >= Grid.GridSize - 1)
+                || (Grid.OccupiedGridPoints[i].input == Grid.GridPoint.InputType.O && GetLength(Grid.GridPoints[Grid.OccupiedGridPoints[i].xCoord, Grid.OccupiedGridPoints[i].yCoord], Direction.Bottom, Grid.GridPoint.InputType.O) >= Grid.GridSize - 1)
+                || (Grid.OccupiedGridPoints[i].input == Grid.GridPoint.InputType.O && GetLength(Grid.GridPoints[Grid.OccupiedGridPoints[i].xCoord, Grid.OccupiedGridPoints[i].yCoord], Direction.Left, Grid.GridPoint.InputType.O) >= Grid.GridSize - 1))
             {
                 return GameConditions.ComputerWins;
             }
@@ -138,44 +149,50 @@ public class GameManager
     }
     #endregion
 
-    //  Recursivly return the length of the input type in a given direction and input type
-    private int GetLength(int length, Grid.GridPoint gridPoint, Direction dir, Grid.GridPoint.InputType inputType)
+    #region GetLength(): Recursivly return the length of the input type in a given direction and input type
+    private int GetLength(Grid.GridPoint gridPoint, Direction dir, Grid.GridPoint.InputType inputType)
     {
         //  Recursivly count top neighbors
         if (dir == Direction.Top && gridPoint.yCoord - 1 >= 0 && Grid.GridPoints[gridPoint.xCoord, gridPoint.yCoord-1].input == inputType)
-            return length + GetLength(length, gridPoint.GetTopNeighbor(), dir, inputType);
+            return 1 + GetLength(gridPoint.GetTopNeighbor(), dir, inputType);
 
         //  Recursivly count right neighbors
         else if (dir == Direction.Right && gridPoint.xCoord + 1 < Grid.GridSize && Grid.GridPoints[gridPoint.xCoord + 1, gridPoint.yCoord].input == inputType)
-            return length + GetLength(length, gridPoint.GetRightNeighbor(), dir, inputType);
+            return 1 + GetLength(gridPoint.GetRightNeighbor(), dir, inputType);
 
         //  Recursivly count bottom neighbors
         else if (dir == Direction.Bottom && gridPoint.yCoord + 1 < Grid.GridSize && Grid.GridPoints[gridPoint.xCoord, gridPoint.yCoord + 1].input == inputType)
-            return length + GetLength(length, gridPoint.GetBottomNeighbor(), dir, inputType);
+            return 1 + GetLength(gridPoint.GetBottomNeighbor(), dir, inputType);
 
         //  Recursivly count left neighbors
         else if (dir == Direction.Left && gridPoint.xCoord - 1 >= 0 && Grid.GridPoints[gridPoint.xCoord - 1, gridPoint.yCoord].input == inputType)
-            return length + GetLength(length, gridPoint.GetLeftNeighbor(), dir, inputType);
-        return 0;
-    }
+            return 1 + GetLength(gridPoint.GetLeftNeighbor(), dir, inputType);
 
-    //  Process things when player wins
+        else
+            return 0;
+    }
+    #endregion
+
+    #region ProcessPlayerWin(): Process things when player wins
     public void ProcessPlayerWin()
     {
         Console.WriteLine("\nYou win!");
         playerScore++;
     }
+    #endregion
 
-    //  Process things when computer wins
+    #region ProcessComputerWin(): Process things when computer wins
     public void ProcessComputerWin()
     {
         Console.WriteLine("\nI win!");
         computerScore++;
     }
+    #endregion
 
-    //  Process things when round ties
+    #region ProcessTie(): Process things when round ties
     public void ProcessTie()
     {
         Console.WriteLine("\nIt's a tie!");
     }
+    #endregion
 }

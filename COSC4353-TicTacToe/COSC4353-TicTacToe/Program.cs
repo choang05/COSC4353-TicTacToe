@@ -16,7 +16,7 @@ class Program
         //  Initialize game manager
         GameManager gameManager = new GameManager();
 
-        //  Prompt user for difficulty level & evaluate input for validity, if not, repeat request
+        #region Prompt user for difficulty level & evaluate input for validity, if not, repeat request
         PrintDifficultyPrompt();
         string difficultyInput = Console.ReadLine();
         while (!IsDifficultyInputValid(difficultyInput))
@@ -31,7 +31,9 @@ class Program
         int difficultyLevel = int.Parse(difficultyInput);
 
         PrintDifficulty(difficultyLevel);
+        #endregion
 
+        #region While nobody has won the round yet...
         while (true)
         {
             //  Initialize grid given board size
@@ -96,11 +98,11 @@ class Program
                             //  Input 'X' in the location for player
                             Grid.InputGridPoint(columnNum, rowNum, Grid.GridPoint.InputType.X);
 
-                            if (columnNum + 1 < Grid.GridSize)
-                            {
-                                Console.WriteLine(Grid.GridPoints[columnNum,rowNum].GetRightNeighbor().input);
+                            //if (columnnum + 1 < grid.gridsize)
+                            //{
+                            //    console.writeline(grid.gridpoints[columnnum,rownum].getrightneighbor().input);
 
-                            }
+                            //}
 
                             //  Set the next turn to computer
                             gameManager.curTurn = GameManager.TurnState.ComputerTurn;
@@ -167,13 +169,14 @@ class Program
             else
                 break;
         }
+        #endregion
 
         Console.WriteLine("\nThank you for playing Tic-Tac-Toe.");
 
         Console.ReadLine();         //  Pause console so it doesn't close
     }
 
-    #region Returns true if difficulty input is a integer and is within valid ranges. Otherwise, return false
+    #region IsDifficultyInputValid(): Returns true if difficulty input is a integer and is within valid ranges. Otherwise, return false
     private static bool IsDifficultyInputValid(string input)
     {
         // determine if input is a integer 
@@ -190,7 +193,7 @@ class Program
     }
     #endregion
 
-    #region Returns true if TicTacToe input is a integer and is within valid ranges. Otherwise, return false
+    #region IsTicTacToeInputValid(): Returns true if TicTacToe input is a integer and is within valid ranges. Otherwise, return false
     private static bool IsTicTacToeInputValid(string input)
     {
         // determine if input is a integer 
@@ -208,8 +211,8 @@ class Program
         return false;
     }
     #endregion
-    
-    #region Prints the difficulty prompt
+
+    #region PrintDifficultyPrompt(): Prints the difficulty prompt
     private static void PrintDifficultyPrompt()
     {
         Console.Write("1. Easy\n" +
@@ -219,7 +222,7 @@ class Program
     }
     #endregion
 
-    #region Prints the TicTacToe input prompt
+    #region PromptTicTacToeInput(): Prints the TicTacToe input prompt
     private static void PromptTicTacToeInput(bool promptRow)
     {
         if (promptRow)
@@ -229,7 +232,7 @@ class Program
     }
     #endregion
 
-    #region Prints the difficulty
+    #region PrintDifficulty(): Prints the difficulty
     private static void PrintDifficulty(int difficultyLevel)
     {
         Console.Write("\nDifficulty level: ");
@@ -249,7 +252,7 @@ class Program
     }
     #endregion
 
-    #region Returns true if user if they want to play again.
+    #region PromptUserForReplay(): Returns true if user if they want to play again.
     private static bool PromptUserForReplay()
     {
         Console.Write("\nWould you like to play again? (1 = Yes, 2 = No): ");
